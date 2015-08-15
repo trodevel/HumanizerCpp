@@ -1,4 +1,4 @@
-// $Revision: 2308 $ $Date:: 2015-08-11 #$ $Author: serge $
+// $Revision: 2316 $ $Date:: 2015-08-14 #$ $Author: serge $
 
 #ifndef _System_String_h_
 #define _System_String_h_
@@ -38,8 +38,10 @@ inline std::string Join( const std::string & delim, const std::vector<std::strin
         }
         else
         {
-            res += delim + e;
+            res += delim;
         }
+
+        res += e;
     }
 
     return res;

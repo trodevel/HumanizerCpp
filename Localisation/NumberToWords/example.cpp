@@ -5,11 +5,11 @@
 using namespace Humanizer::Localisation::NumberToWords;
 
 
-void test_kern( int number, const std::string & loc, const std::string & expected, bool is_ordinary )
+void test_kern( int number, const std::string & loc, const std::string & expected, bool is_ordinal )
 {
     EnglishNumberToWordsConverter e;
 
-    std::string res = e.Convert( number );
+    std::string res = is_ordinal ? e.ConvertToOrdinal( number ) :e.Convert( number );
 
     if( res == expected )
         std::cout << "number " << number << " - PASSED" << std::endl;

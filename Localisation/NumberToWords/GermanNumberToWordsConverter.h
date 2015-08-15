@@ -1,7 +1,11 @@
+// automatically converted from C# to C++ by convert_cs_to_cpp.sh ver. 1.0
+
 #ifndef _GermanNumberToWordsConverter_h_
 #define _GermanNumberToWordsConverter_h_
 
-#include "GenderedNumberToWordsConverter.h"   // GenderedNumberToWordsConverter
+
+using System;
+using System::Collections::Generic;
 
 namespace Humanizer
 {
@@ -11,15 +15,23 @@ namespace NumberToWords
 {
     class GermanNumberToWordsConverter : GenderedNumberToWordsConverter
     {
-        private static readonly std::string[] UnitsMap = { "null", "ein", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn", "elf", "zwölf", "dreizehn", "vierzehn", "fünfzehn", "sechzehn", "siebzehn", "achtzehn", "neunzehn" };
-        private static readonly std::string[] TensMap = { "null", "zehn", "zwanzig", "dreißig", "vierzig", "fünfzig", "sechzig", "siebzig", "achtzig", "neunzig" };
-        private static readonly std::string[] UnitsOrdinal = { std::string.Empty, "ers", "zwei", "drit", "vier", "fünf", "sechs", "sieb", "ach", "neun", "zehn", "elf", "zwölf", "dreizehn", "vierzehn", "fünfzehn", "sechzehn", "siebzehn", "achtzehn", "neunzehn" };
-        private static readonly std::string[] MillionOrdinalSingular = {"einmillion", "einemillion"};
-        private static readonly std::string[] MillionOrdinalPlural = {"{0}million", "{0}millionen"};
-        private static readonly std::string[] BillionOrdinalSingular = {"einmilliard", "einemilliarde"};
-        private static readonly std::string[] BillionOrdinalPlural = {"{0}milliard", "{0}milliarden"};
+        private:
+ static const std::string[] UnitsMap = { "null", "ein", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn", "elf", "zwölf", "dreizehn", "vierzehn", "fünfzehn", "sechzehn", "siebzehn", "achtzehn", "neunzehn" };
+        private:
+ static const std::string[] TensMap = { "null", "zehn", "zwanzig", "dreißig", "vierzig", "fünfzig", "sechzig", "siebzig", "achtzig", "neunzig" };
+        private:
+ static const string[] UnitsOrdinal = { std::string.Empty, "ers", "zwei", "drit", "vier", "fünf", "sechs", "sieb", "ach", "neun", "zehn", "elf", "zwölf", "dreizehn", "vierzehn", "fünfzehn", "sechzehn", "siebzehn", "achtzehn", "neunzehn" };
+        private:
+ static const std::string[] MillionOrdinalSingular = {"einmillion", "einemillion"};
+        private:
+ static const std::string[] MillionOrdinalPlural = {"{0}million", "{0}millionen"};
+        private:
+ static const std::string[] BillionOrdinalSingular = {"einmilliard", "einemilliarde"};
+        private:
+ static const std::string[] BillionOrdinalPlural = {"{0}milliard", "{0}milliarden"};
 
-        public override std::string Convert(int number, GrammaticalGender gender)
+        public:
+ virtual std::string Convert(int number, GrammaticalGender gender)
         {
             if (number == 0)
                 return "null";
@@ -27,9 +39,9 @@ namespace NumberToWords
             if (number < 0)
                 return std::string.Format("minus {0}", Convert(-number));
 
-            var parts = new List<std::string>();
+            auto parts = new std::list<std::string>();
 
-            var billions = number/1000000000;
+            auto billions = number/1000000000;
             if (billions > 0)
             {
                 parts.Add(Part("{0} Milliarden", "eine Milliarde", billions));
@@ -38,7 +50,7 @@ namespace NumberToWords
                     parts.Add(" ");
             }
 
-            var millions = number/1000000;
+            auto millions = number/1000000;
             if (millions > 0)
             {
                 parts.Add(Part("{0} Millionen", "eine Million", millions));
@@ -47,14 +59,14 @@ namespace NumberToWords
                     parts.Add(" ");
             }
 
-            var thousands = number/1000;
+            auto thousands = number/1000;
             if (thousands > 0)
             {
                 parts.Add(Part("{0}tausend", "eintausend", thousands));
                 number %= 1000;
             }
 
-            var hundreds = number/100;
+            auto hundreds = number/100;
             if (hundreds > 0)
             {
                 parts.Add(Part("{0}hundert", "einhundert", hundreds));
@@ -72,7 +84,7 @@ namespace NumberToWords
                 }
                 else
                 {
-                    var units = number%10;
+                    auto units = number%10;
                     if (units > 0)
                         parts.Add(std::string.Format("{0}und", UnitsMap[units]));
 
@@ -83,42 +95,43 @@ namespace NumberToWords
             return std::string.Join("", parts);
         }
 
-        public override std::string ConvertToOrdinal(int number, GrammaticalGender gender)
+        public:
+ virtual std::string ConvertToOrdinal(int number, GrammaticalGender gender)
         {
             if (number == 0)
                 return "null" + GetEndingForGender(gender);
 
-            var parts = new List<std::string>();
+            auto parts = new std::list<std::string>();
             if (number < 0)
             {
                 parts.Add("minus ");
                 number = -number;
             }
 
-            var billions = number/1000000000;
+            auto billions = number/1000000000;
             if (billions > 0)
             {
                 number %= 1000000000;
-                var noRest = NoRestIndex(number);
+                auto noRest = NoRestIndex(number);
                 parts.Add(Part(BillionOrdinalPlural[noRest], BillionOrdinalSingular[noRest], billions));
             }
 
-            var millions = number/1000000;
+            auto millions = number/1000000;
             if (millions > 0)
             {
                 number %= 1000000;
-                var noRest = NoRestIndex(number);
+                auto noRest = NoRestIndex(number);
                 parts.Add(Part(MillionOrdinalPlural[noRest], MillionOrdinalSingular[noRest], millions));
             }
 
-            var thousands = number/1000;
+            auto thousands = number/1000;
             if (thousands > 0)
             {
                 parts.Add(Part("{0}tausend", "eintausend", thousands));
                 number %= 1000;
             }
 
-            var hundreds = number/100;
+            auto hundreds = number/100;
             if (hundreds > 0)
             {
                 parts.Add(Part("{0}hundert", "einhundert", hundreds));
@@ -136,19 +149,22 @@ namespace NumberToWords
             return std::string.Join("", parts);
         }
 
-        private std::string Part(std::string pluralFormat, std::string singular, int number)
+        private:
+ string Part(string pluralFormat, std::string singular, int number)
         {
             if (number == 1)
                 return singular;
             return std::string.Format(pluralFormat, Convert(number));
         }
 
-        private static int NoRestIndex(int number)
+        private:
+ static int NoRestIndex(int number)
         {
             return number == 0 ? 0 : 1;
         }
 
-        private static std::string GetEndingForGender(GrammaticalGender gender)
+        private:
+ static std::string GetEndingForGender(GrammaticalGender gender)
         {
             switch (gender)
             {
@@ -159,11 +175,10 @@ namespace NumberToWords
                 case GrammaticalGender::Neuter:
                     return "tes";
                 default:
-                    throw new ArgumentOutOfRangeException("gender");
+                    throw new std::out_of_range("gender");
             }
         }
-    };
+    }
 }
-}
-}
+
 #endif // _GermanNumberToWordsConverter_h_
