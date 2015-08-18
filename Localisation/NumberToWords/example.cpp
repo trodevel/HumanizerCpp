@@ -116,6 +116,9 @@ int main()
     test( 11, "en-US", "eleven" );
     test( 22, "ar", "اثنان و عشرون" );
     test( 40, "ru", "сорок" );
+    test( 1111111111, "de", "eine Milliarde einhundertelf Millionen einhundertelftausendeinhundertelf" );
+    test( 123456, "de", "einhundertdreiundzwanzigtausendvierhundertsechsundfünfzig" );
+
 
     test_ord( 1021, "en-US", "thousand and twenty-first" );
     test_ord( 21, "ar", "الحادي و العشرون" );
