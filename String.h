@@ -1,4 +1,4 @@
-// $Revision: 2316 $ $Date:: 2015-08-14 #$ $Author: serge $
+// $Revision: 2332 $ $Date:: 2015-08-18 #$ $Author: serge $
 
 #ifndef _System_String_h_
 #define _System_String_h_
@@ -43,6 +43,38 @@ inline std::string Join( const std::string & delim, const std::vector<std::strin
 
         res += e;
     }
+
+    return res;
+}
+
+// http://stackoverflow.com/questions/3418231/replace-part-of-a-string-with-another-string
+inline void replaceAll( std::string& str, const std::string& from, const std::string& to )
+{
+    if( from.empty() )
+        return;
+    size_t start_pos = 0;
+    while( ( start_pos = str.find( from, start_pos ) ) != std::string::npos )
+    {
+        str.replace( start_pos, from.length(), to );
+        start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
+    }
+}
+
+inline std::string Format( const std::string & format, const std::string & arg0 )
+{
+    std::string res = format;
+
+    replaceAll( res, "{0}", arg0 );
+
+    return res;
+}
+
+inline std::string Format( const std::string & format, const std::string & arg0, const std::string & arg1 )
+{
+    std::string res = format;
+
+    replaceAll( res, "{0}", arg0 );
+    replaceAll( res, "{1}", arg1 );
 
     return res;
 }
