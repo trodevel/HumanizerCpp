@@ -14,6 +14,10 @@ namespace Globalization
         CultureInfo(std::string);
         CultureInfo(uint32_t, bool);
         CultureInfo(std::string, bool);
+
+    public:
+        std::string Name;
+        std::string TwoLetterISOLanguageName;
     };
 }
 }
