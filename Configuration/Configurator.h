@@ -1,18 +1,20 @@
-// automatically converted from C# to C++ by convert_cs_to_cpp.sh ver. 1.0
+// automatically converted from C# to C++ by convert_cs_to_cpp.sh ver. 1.1
 
 #ifndef _Configurator_h_
 #define _Configurator_h_
 
 
-using System;
-using System::Collections::Generic;
-using System::Globalization;
-using System::Reflection;
-using Humanizer::DateTimeHumanizeStrategy;
-using Humanizer::Localisation::Formatters;
+#include "../Localisation/NumberToWords/INumberToWordsConverter.h"  // INumberToWordsConverter
+
+//using System;
+//using System::Collections::Generic;
+//using System::Globalization;
+//using System::Reflection;
+//using Humanizer::DateTimeHumanizeStrategy;
+//using Humanizer::Localisation::Formatters;
 using Humanizer::Localisation::NumberToWords;
-using Humanizer::Localisation::Ordinalizers;
-using Humanizer::Localisation::CollectionFormatters;
+//using Humanizer::Localisation::Ordinalizers;
+//using Humanizer::Localisation::CollectionFormatters;
 
 namespace Humanizer
 {
@@ -21,9 +23,12 @@ namespace Configuration
     /// <summary>
     /// Provides a configuration point for Humanizer
     /// </summary>
-    public:
- static class Configurator
+ class Configurator
     {
+     typedef System::Globalization::CultureInfo CultureInfo;
+     typedef Humanizer::Localisation::NumberToWords::INumberToWordsConverter INumberToWordsConverter;
+
+#ifdef XXX
         private:
  static const LocaliserRegistry<ICollectionFormatter> _collectionFormatters = new CollectionFormatterRegistry();
 
@@ -39,25 +44,30 @@ namespace Configuration
         private:
  static const LocaliserRegistry<IFormatter> _formatters = new FormatterRegistry();
         /// <summary>
-        /// A registry of formatters used to format std::strings based on the current locale
+        /// A registry of formatters used to format strings based on the current locale
         /// </summary>
         public:
  static LocaliserRegistry<IFormatter> Formatters
         {
             get { return _formatters; }
         }
+#endif
 
         private:
- static const LocaliserRegistry<INumberToWordsConverter> _numberToWordsConverters = new NumberToWordsConverterRegistry();
+    class NumberToWordsConverters
+    {
+        static const LocaliserRegistry<INumberToWordsConverter> *_numberToWordsConverters = new NumberToWordsConverterRegistry();
         /// <summary>
         /// A registry of number to words converters used to localise ToWords and ToOrdinalWords methods
         /// </summary>
-        public:
- static LocaliserRegistry<INumberToWordsConverter> NumberToWordsConverters
+    public:
+        static LocaliserRegistry<INumberToWordsConverter> get()
         {
-            get { return _numberToWordsConverters; }
+            return _numberToWordsConverters;
         }
+    };
 
+#ifdef XXX
         private:
  static const LocaliserRegistry<IOrdinalizer> _ordinalizers = new OrdinalizerRegistry();
         /// <summary>
@@ -68,7 +78,6 @@ namespace Configuration
         {
             get { return _ordinalizers; }
         }
-
         static ICollectionFormatter CollectionFormatter
         {
             get
@@ -85,16 +94,17 @@ namespace Configuration
         {
             return Formatters.ResolveForCulture(culture);
         }
+#endif
 
-        /// <summary>
-        /// The converter to be used
-        /// </summary>
-        /// <param name="culture">The culture to retrieve number to words converter for. Null means that current thread's UI culture should be used.</param>
-        static INumberToWordsConverter GetNumberToWordsConverter(CultureInfo culture)
-        {
-            return NumberToWordsConverters.ResolveForCulture(culture);
-        }
-
+    /// <summary>
+    /// The converter to be used
+    /// </summary>
+    /// <param name="culture">The culture to retrieve number to words converter for. Null means that current thread's UI culture should be used.</param>
+    static INumberToWordsConverter GetNumberToWordsConverter( const CultureInfo *culture )
+    {
+        return NumberToWordsConverters::get().ResolveForCulture( culture );
+    }
+#ifdef XXX
         /// <summary>
         /// The ordinalizer to be used
         /// </summary>
@@ -131,20 +141,22 @@ namespace Configuration
         }
 
         private:
- static const Func<PropertyInfo, bool> DefaultEnumDescriptionPropertyLocator = p => p.Name == "Description";
+ static const std::function<PropertyInfo, bool> DefaultEnumDescriptionPropertyLocator = p => p.Name == "Description";
         private:
- static Func<PropertyInfo, bool> _enumDescriptionPropertyLocator = DefaultEnumDescriptionPropertyLocator;
+ static std::function<PropertyInfo, bool> _enumDescriptionPropertyLocator = DefaultEnumDescriptionPropertyLocator;
         /// <summary>
         /// A predicate function for description property of attribute to use for Enum.Humanize
         /// </summary>
         public:
- static Func<PropertyInfo, bool> EnumDescriptionPropertyLocator
+ static std::function<PropertyInfo, bool> EnumDescriptionPropertyLocator
         {
             get { return _enumDescriptionPropertyLocator; }
             set { _enumDescriptionPropertyLocator = value ?? DefaultEnumDescriptionPropertyLocator; }
         }
     }
+#endif
+};
 }
-
+}
 
 #endif // _Configurator_h_

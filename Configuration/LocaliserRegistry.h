@@ -3,100 +3,97 @@
 #ifndef _LocaliserRegistry_h_
 #define _LocaliserRegistry_h_
 
+#include <map>                      // std::map
+#include <functional>               // std::function
 
-using System;
-using System::Collections::Generic;
-using System::Globalization;
+#include "../CultureInfo.h"         // CultureInfo
 
 namespace Humanizer
 {
 namespace Configuration
 {
+/// <summary>
+/// A registry of localised system components with their associated locales
+/// </summary>
+/// <typeparam name="TLocaliser"></typeparam>
+template< class TLocaliser >
+class LocaliserRegistry
+{
+    typedef System::Globalization::CultureInfo CultureInfo;
+
+private:
+    std::map<std::string, TLocaliser*> _localisers;
+    TLocaliser* _defaultLocaliser;
+
+public:
     /// <summary>
-    /// A registry of localised system components with their associated locales
+    /// Creates a localiser registry with the default localiser set to the provided value
     /// </summary>
-    /// <typeparam name="TLocaliser"></typeparam>
-    public:
- class LocaliserRegistry<TLocaliser>
-        where TLocaliser : class
+    /// <param name="defaultLocaliser"></param>
+    LocaliserRegistry( TLocaliser *defaultLocaliser )
     {
-        private:
- const IDictionary<std::string, std::function<CultureInfo, TLocaliser>> _localisers = new std::map<std::string, std::function<CultureInfo, TLocaliser>>();
-        private:
- const std::function<CultureInfo, TLocaliser> _defaultLocaliser;
-
-        /// <summary>
-        /// Creates a localiser registry with the default localiser set to the provided value
-        /// </summary>
-        /// <param name="defaultLocaliser"></param>
-        public:
- LocaliserRegistry(TLocaliser defaultLocaliser)
-        {
-            _defaultLocaliser = (culture) => defaultLocaliser;
-        }
-
-        /// <summary>
-        /// Creates a localiser registry with the default localiser factory set to the provided value
-        /// </summary>
-        /// <param name="defaultLocaliser"></param>
-        public:
- LocaliserRegistry(std::function<CultureInfo, TLocaliser> defaultLocaliser)
-        {
-            _defaultLocaliser = defaultLocaliser;
-        }
-
-        /// <summary>
-        /// Gets the localiser for the current thread's UI culture 
-        /// </summary>
-        public:
- TLocaliser ResolveForUiCulture()
-        {
-            return ResolveForCulture(null);
-        }
-
-        /// <summary>
-        /// Gets the localiser for the specified culture 
-        /// </summary>
-        /// <param name="culture">The culture to retrieve localiser for. If not specified, current thread's UI culture is used.</param>
-        public:
- TLocaliser ResolveForCulture(CultureInfo culture)
-        {
-            return FindLocaliser(culture ?? CultureInfo.CurrentUICulture)(culture);
-        }
-
-        /// <summary>
-        /// Registers the localiser for the culture provided 
-        /// </summary>
-        public:
- void Register(std::string localeCode, TLocaliser localiser)
-        {
-            _localisers[localeCode] = (culture) => localiser;
-        }
-
-        /// <summary>
-        /// Registers the localiser factory for the culture provided
-        /// </summary>
-        public:
- void Register(std::string localeCode, std::function<CultureInfo, TLocaliser> localiser)
-        {
-            _localisers[localeCode] = localiser;
-        }
-
-        private:
- std::function<CultureInfo, TLocaliser> FindLocaliser(CultureInfo culture)
-        {
-            std::function<CultureInfo, TLocaliser> localiser;
-
-            if (_localisers.TryGetValue(culture.Name, out localiser))
-                return localiser;
-
-            if (_localisers.TryGetValue(culture.TwoLetterISOLanguageName, out localiser))
-                return localiser;
-
-            return _defaultLocaliser;
-        }
+        _defaultLocaliser = defaultLocaliser;
     }
-}
 
+#ifdef XXX
+    /// <summary>
+    /// Creates a localiser registry with the default localiser factory set to the provided value
+    /// </summary>
+    /// <param name="defaultLocaliser"></param>
+    LocaliserRegistry(std::function<CultureInfo, TLocaliser> defaultLocaliser)
+    {
+        _defaultLocaliser = defaultLocaliser;
+    }
+#endif
+
+    /// <summary>
+    /// Gets the localiser for the current thread's UI culture
+    /// </summary>
+    TLocaliser* ResolveForUiCulture()
+    {
+        return ResolveForCulture( nullptr );
+    }
+
+    /// <summary>
+    /// Gets the localiser for the specified culture
+    /// </summary>
+    /// <param name="culture">The culture to retrieve localiser for. If not specified, current thread's UI culture is used.</param>
+    TLocaliser* ResolveForCulture( const CultureInfo *culture )
+    {
+        return FindLocaliser( culture );
+    }
+
+/// <summary>
+/// Registers the localiser for the culture provided
+/// </summary>
+    void Register( const std::string & localeCode, TLocaliser * localiser )
+    {
+        _localisers[localeCode] = localiser;
+    }
+
+#ifdef XXX
+/// <summary>
+/// Registers the localiser factory for the culture provided
+/// </summary>
+    void Register(std::string localeCode, std::function<CultureInfo, TLocaliser> localiser)
+    {
+        _localisers[localeCode] = localiser;
+    }
+#endif
+
+    TLocaliser* FindLocaliser( const CultureInfo *culture )
+    {
+        if( culture == nullptr )
+            return _defaultLocaliser;
+
+        auto it = _localisers.find( culture->TwoLetterISOLanguageName );
+        if( it != _localisers.end() )
+            return it->second;
+
+        return _defaultLocaliser;
+    }
+};
+}
+}
 
 #endif // _LocaliserRegistry_h_

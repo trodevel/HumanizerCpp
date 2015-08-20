@@ -25,7 +25,9 @@ namespace Configuration
             Register("tr", new TurkishOrdinalizer());
             Register("uk", new UkrainianOrdinalizer());
         }
-    }
+    };
+}
+}
 }
 
 
