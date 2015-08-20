@@ -11,7 +11,7 @@ namespace Localisation
 {
 namespace NumberToWords
 {
-    class GermanNumberToWordsConverter : GenderedNumberToWordsConverter
+    class GermanNumberToWordsConverter : public GenderedNumberToWordsConverter
     {
         typedef GenderedNumberToWordsConverter Base;
 private:

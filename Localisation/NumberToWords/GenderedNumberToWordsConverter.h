@@ -9,7 +9,7 @@ namespace Localisation
 {
 namespace NumberToWords
 {
-    class GenderedNumberToWordsConverter : INumberToWordsConverter
+    class GenderedNumberToWordsConverter : public INumberToWordsConverter
     {
         private:
 

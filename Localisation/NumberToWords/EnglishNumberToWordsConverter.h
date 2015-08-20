@@ -11,7 +11,7 @@ namespace Localisation
 {
 namespace NumberToWords
 {
-    class EnglishNumberToWordsConverter : GenderlessNumberToWordsConverter
+    class EnglishNumberToWordsConverter : public GenderlessNumberToWordsConverter
     {
     private:
         static const std::string UnitsMap[];
