@@ -17,7 +17,7 @@ namespace NumberToWords
         /// </summary>
         /// <param name="number"></param>
         /// <returns></returns>
-        virtual std::string Convert(int number) = 0;
+        virtual std::string Convert(int number) const = 0;
 
         /// <summary>
         /// Converts the number to std::string ignoring the provided grammatical gender
@@ -25,7 +25,7 @@ namespace NumberToWords
         /// <param name="number"></param>
         /// <param name="gender"></param>
         /// <returns></returns>
-        std::string Convert(int number, GrammaticalGender gender)
+        std::string Convert(int number, GrammaticalGender gender) const
         {
             return Convert(number);
         }
@@ -35,7 +35,7 @@ namespace NumberToWords
         /// </summary>
         /// <param name="number"></param>
         /// <returns></returns>
-        virtual std::string ConvertToOrdinal(int number)    = 0;
+        virtual std::string ConvertToOrdinal(int number) const    = 0;
 
         /// <summary>
         /// Converts the number to ordinal std::string ignoring  the provided grammatical gender
@@ -43,7 +43,7 @@ namespace NumberToWords
         /// <param name="number"></param>
         /// <param name="gender"></param>
         /// <returns></returns>
-        std::string ConvertToOrdinal(int number, GrammaticalGender gender)
+        std::string ConvertToOrdinal(int number, GrammaticalGender gender) const
         {
             return ConvertToOrdinal(number);
         }

@@ -2,6 +2,7 @@
 #define _CultureInfo_h_
 
 #include <stdint.h>     // uint32_t
+#include <string>
 
 namespace System
 {
@@ -11,9 +12,9 @@ namespace Globalization
     {
     public:
         CultureInfo(uint32_t);
-        CultureInfo(std::string);
+        CultureInfo(const std::string & );
         CultureInfo(uint32_t, bool);
-        CultureInfo(std::string, bool);
+        CultureInfo(const std::string &, bool);
 
     public:
         std::string Name;

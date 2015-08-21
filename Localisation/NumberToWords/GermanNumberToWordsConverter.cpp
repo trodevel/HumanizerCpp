@@ -16,7 +16,7 @@ const std::string GermanNumberToWordsConverter::MillionOrdinalPlural[] = {"{0}mi
 const std::string GermanNumberToWordsConverter::BillionOrdinalSingular[] = {"einmilliard", "einemilliarde"};
 const std::string GermanNumberToWordsConverter::BillionOrdinalPlural[] = {"{0}milliard", "{0}milliarden"};
 
-std::string GermanNumberToWordsConverter::Convert( int number, GrammaticalGender gender )
+std::string GermanNumberToWordsConverter::Convert( int number, GrammaticalGender gender ) const
 {
     if( number == 0 )
         return "null";
@@ -80,7 +80,7 @@ std::string GermanNumberToWordsConverter::Convert( int number, GrammaticalGender
     return Join( "", parts );
 }
 
-std::string GermanNumberToWordsConverter::ConvertToOrdinal( int number, GrammaticalGender gender )
+std::string GermanNumberToWordsConverter::ConvertToOrdinal( int number, GrammaticalGender gender ) const
 {
     if( number == 0 )
         return "null" + GetEndingForGender( gender );
@@ -134,7 +134,7 @@ std::string GermanNumberToWordsConverter::ConvertToOrdinal( int number, Grammati
     return Join( "", parts );
 }
 
-std::string GermanNumberToWordsConverter::Part( const std::string & pluralFormat, const std::string & singular, int number )
+std::string GermanNumberToWordsConverter::Part( const std::string & pluralFormat, const std::string & singular, int number ) const
 {
     if( number == 1 )
         return singular;

@@ -64,7 +64,7 @@ EXE=
 
 #vpath %.cpp .
 
-SRCC =  NumberToWordsConverterRegistry.cpp \
+SRCC = Configurator.cpp NumberToWordsConverterRegistry.cpp \
 
 OBJS = $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCC)) $(patsubst %.c,$(OBJDIR)/%.o,$(SRCC))
 

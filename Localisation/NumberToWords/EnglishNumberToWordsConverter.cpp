@@ -22,17 +22,17 @@ const std::map<int, std::string> EnglishNumberToWordsConverter::OrdinalException
     {12, "twelfth"},
 };
 
-std::string EnglishNumberToWordsConverter::Convert(int number)
+std::string EnglishNumberToWordsConverter::Convert(int number) const
 {
     return Convert(number, false);
 }
 
-std::string EnglishNumberToWordsConverter::ConvertToOrdinal(int number)
+std::string EnglishNumberToWordsConverter::ConvertToOrdinal(int number) const
 {
     return Convert(number, true);
 }
 
-std::string EnglishNumberToWordsConverter::Convert(int number, bool isOrdinal)
+std::string EnglishNumberToWordsConverter::Convert(int number, bool isOrdinal) const
 {
     if (number == 0)
         return GetUnitValue(0, isOrdinal);

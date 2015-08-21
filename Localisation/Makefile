@@ -1,4 +1,4 @@
-# Makefile for libHumanizerCpp
+# Makefile for libLocalisation
 # Copyright (C) 2015 Sergey Kolevatov
 
 ###################################################################
@@ -13,9 +13,9 @@ EXT_LIBS=
 
 ###################################################################
 
-PROJECT := HumanizerCpp
+PROJECT := Localisation
 
-LIBNAME=libHumanizerCpp
+LIBNAME=libLocalisation
 
 ###################################################################
 
@@ -26,8 +26,6 @@ ifeq "$(MODE)" "debug"
     CFLAGS := -Wall -std=c++0x -ggdb -g3 -Wl,--no-as-needed
     LFLAGS := -Wall -lstdc++ -lrt -ldl -lm -g
     LFLAGS_TEST := -Wall -lstdc++ -lrt -ldl -g -L. -lm $(LFLAGS_STAT)
-
-    TARGET=example
 else
     OBJDIR=./OPT
     BINDIR=./OPT
@@ -35,8 +33,6 @@ else
     CFLAGS := -Wall -std=c++0x -Wl,--no-as-needed
     LFLAGS := -Wall -lstdc++ -lrt -ldl -lm
     LFLAGS_TEST := -Wall -lstdc++ -lrt -ldl -L. -lm $(LFLAGS_STAT)
-
-    TARGET=example
 endif
 
 ###################################################################
@@ -54,7 +50,7 @@ SHAREDLIBV=
 SHAREDLIBM=
 LIBS=$(STATICLIB) $(SHAREDLIBV)
 
-AR=ar rc
+AR=ar
 RANLIB=ranlib
 LDCONFIG=ldconfig
 LDSHAREDLIBC=-lc
@@ -66,12 +62,13 @@ SRCC =
 
 OBJS = $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCC)) $(patsubst %.c,$(OBJDIR)/%.o,$(SRCC))
 
-LIB_NAMES = Configuration Localisation
+LIB_NAMES = NumberToWords
 LIBS = $(patsubst %,$(BINDIR)/lib%.a,$(LIB_NAMES))
 
 all: static
 
-static: $(TARGET)
+static: $(BINDIR) $(BINDIR)/$(STATICLIB)
+	@echo "$@ uptodate - ${MODE}"
 
 check: test
 
@@ -80,9 +77,13 @@ test: all teststatic
 teststatic: static
 	@echo static test is not ready yet, dc10
 
-$(BINDIR)/$(STATICLIB): $(OBJS)
-	$(AR) $@ $(OBJS)
-	-@ ($(RANLIB) $@ || true) >/dev/null 2>&1
+$(BINDIR):
+	mkdir -p $(OBJDIR)
+	mkdir -p $(BINDIR)
+
+$(BINDIR)/$(STATICLIB): $(LIBS)
+	$(AR) -qc $@ $(BINDIR)/*.o
+	#-@ ($(RANLIB) $@ || true) >/dev/null 2>&1
 
 $(OBJDIR)/%.o: %.cpp
 	@echo compiling $<
@@ -92,23 +93,13 @@ $(OBJDIR)/%.o: %.c
 	@echo compiling $<
 	$(CC) $(CFLAGS) -DPIC -c -o $@ $< $(INCL)
 
-$(TARGET): $(BINDIR) $(BINDIR)/$(TARGET) 
-	ln -sf $(BINDIR)/$(TARGET) $(TARGET)
-	@echo "$@ uptodate - ${MODE}"
-
-$(BINDIR)/$(TARGET): $(LIBS) $(OBJDIR)/$(TARGET).o $(OBJS) $(BINDIR)/$(STATICLIB)
-	$(CC) $(CFLAGS) -o $@ $(OBJDIR)/$(TARGET).o $(BINDIR)/$(LIBNAME).a $(LIBS) $(EXT_LIBS) $(LFLAGS_TEST)
-
-$(BINDIR)/lib%.a: %
+$(BINDIR)/libNumberToWords.a: NumberToWords
 	cd $<; \
 	make; \
-	cd ../; \
+	cd ..; \
 	ln -sf ../$</$@ $(BINDIR); \
-
-$(BINDIR):
-	mkdir -p $(OBJDIR)
-	mkdir -p $(BINDIR)
+	cd $(BINDIR); \
+	ar -x ../$(BINDIR)/libNumberToWords.a
 
 clean:
-	- rm $(OBJDIR)/*.o $(TARGET) $(BINDIR)/$(TARGET) $(BINDIR)/$(STATICLIB)
-	- rm $(LIBS)
+	- rm $(OBJDIR)/*.o $(BINDIR)/$(STATICLIB)

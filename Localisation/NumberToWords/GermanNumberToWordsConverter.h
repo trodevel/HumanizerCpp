@@ -24,11 +24,11 @@ private:
     static const std::string BillionOrdinalPlural[];
 
 public:
-    virtual std::string Convert( int number, GrammaticalGender gender );
-    virtual std::string ConvertToOrdinal( int number, GrammaticalGender gender );
+    virtual std::string Convert( int number, GrammaticalGender gender ) const;
+    virtual std::string ConvertToOrdinal( int number, GrammaticalGender gender ) const;
 
 private:
-    std::string Part( const std::string & pluralFormat, const std::string & singular, int number );
+    std::string Part( const std::string & pluralFormat, const std::string & singular, int number ) const;
     static int NoRestIndex( int number );
     static std::string GetEndingForGender( GrammaticalGender gender );
 

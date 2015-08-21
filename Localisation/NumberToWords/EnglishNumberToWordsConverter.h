@@ -21,13 +21,13 @@ namespace NumberToWords
 
     public:
 
-        std::string Convert(int number);
+        std::string Convert(int number) const;
 
-        std::string ConvertToOrdinal(int number);
+        std::string ConvertToOrdinal(int number) const;
 
     private:
 
-        std::string Convert(int number, bool isOrdinal);
+        std::string Convert(int number, bool isOrdinal) const;
 
         static std::string GetUnitValue(int number, bool isOrdinal);
 

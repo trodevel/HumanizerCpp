@@ -4,7 +4,10 @@
 #define _Configurator_h_
 
 
+#include "../CultureInfo.h"     // CultureInfo
 #include "../Localisation/NumberToWords/INumberToWordsConverter.h"  // INumberToWordsConverter
+#include "../Configuration/NumberToWordsConverterRegistry.h"        // NumberToWordsConverterRegistry
+#include "../Configuration/LocaliserRegistry.h"         // LocaliserRegistry
 
 //using System;
 //using System::Collections::Generic;
@@ -12,7 +15,7 @@
 //using System::Reflection;
 //using Humanizer::DateTimeHumanizeStrategy;
 //using Humanizer::Localisation::Formatters;
-using Humanizer::Localisation::NumberToWords;
+//using Humanizer::Localisation::NumberToWords;
 //using Humanizer::Localisation::Ordinalizers;
 //using Humanizer::Localisation::CollectionFormatters;
 
@@ -56,12 +59,12 @@ namespace Configuration
         private:
     class NumberToWordsConverters
     {
-        static const LocaliserRegistry<INumberToWordsConverter> *_numberToWordsConverters = new NumberToWordsConverterRegistry();
+        static const LocaliserRegistry<INumberToWordsConverter> *_numberToWordsConverters;
         /// <summary>
         /// A registry of number to words converters used to localise ToWords and ToOrdinalWords methods
         /// </summary>
     public:
-        static LocaliserRegistry<INumberToWordsConverter> get()
+        static const LocaliserRegistry<INumberToWordsConverter>* get()
         {
             return _numberToWordsConverters;
         }
@@ -96,13 +99,14 @@ namespace Configuration
         }
 #endif
 
+        public:
     /// <summary>
     /// The converter to be used
     /// </summary>
     /// <param name="culture">The culture to retrieve number to words converter for. Null means that current thread's UI culture should be used.</param>
-    static INumberToWordsConverter GetNumberToWordsConverter( const CultureInfo *culture )
+    static const INumberToWordsConverter* GetNumberToWordsConverter( const CultureInfo *culture )
     {
-        return NumberToWordsConverters::get().ResolveForCulture( culture );
+        return NumberToWordsConverters::get()->ResolveForCulture( culture );
     }
 #ifdef XXX
         /// <summary>

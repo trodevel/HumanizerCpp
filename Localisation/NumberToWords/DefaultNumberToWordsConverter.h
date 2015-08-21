@@ -39,7 +39,7 @@ public:
     /// <param name="number">Number to be turned to words</param>
     /// <returns></returns>
 public:
-    virtual std::string Convert( int number )
+    virtual std::string Convert( int number ) const
     {
         return std::to_string( number );
     }
@@ -50,7 +50,7 @@ public:
     /// <param name="number">Number to be turned to ordinal words</param>
     /// <returns></returns>
 public:
-    virtual std::string ConvertToOrdinal( int number )
+    virtual std::string ConvertToOrdinal( int number ) const
     {
         return std::to_string( number );
     }
