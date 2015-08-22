@@ -4,7 +4,6 @@
 #define _DefaultNumberToWordsConverter_h_
 
 #include "GenderlessNumberToWordsConverter.h"   // GenderlessNumberToWordsConverter
-#include "../../CultureInfo.h"                  // CultureInfo
 
 namespace Humanizer
 {
@@ -14,10 +13,8 @@ namespace NumberToWords
 {
 class DefaultNumberToWordsConverter: public GenderlessNumberToWordsConverter
 {
-    typedef System::Globalization::CultureInfo CultureInfo;
-
 private:
-//    const CultureInfo _culture;
+//    const std::string _culture;
 
     /// <summary>
     /// Constructor.
@@ -28,7 +25,7 @@ public:
     {
     }
 
-    DefaultNumberToWordsConverter( const CultureInfo * culture )
+    DefaultNumberToWordsConverter( const std::string & culture )
     {
 //        _culture = culture;
     }

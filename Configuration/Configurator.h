@@ -3,8 +3,6 @@
 #ifndef _Configurator_h_
 #define _Configurator_h_
 
-
-#include "../CultureInfo.h"     // CultureInfo
 #include "../Localisation/NumberToWords/INumberToWordsConverter.h"  // INumberToWordsConverter
 #include "../Configuration/NumberToWordsConverterRegistry.h"        // NumberToWordsConverterRegistry
 #include "../Configuration/LocaliserRegistry.h"         // LocaliserRegistry
@@ -28,7 +26,6 @@ namespace Configuration
     /// </summary>
  class Configurator
     {
-     typedef System::Globalization::CultureInfo CultureInfo;
      typedef Humanizer::Localisation::NumberToWords::INumberToWordsConverter INumberToWordsConverter;
 
 #ifdef XXX
@@ -93,7 +90,7 @@ namespace Configuration
         /// The formatter to be used
         /// </summary>
         /// <param name="culture">The culture to retrieve formatter for. Null means that current thread's UI culture should be used.</param>
-        static IFormatter GetFormatter(CultureInfo culture)
+        static IFormatter GetFormatter(std::string culture)
         {
             return Formatters.ResolveForCulture(culture);
         }
@@ -104,7 +101,7 @@ namespace Configuration
     /// The converter to be used
     /// </summary>
     /// <param name="culture">The culture to retrieve number to words converter for. Null means that current thread's UI culture should be used.</param>
-    static const INumberToWordsConverter* GetNumberToWordsConverter( const CultureInfo *culture )
+    static const INumberToWordsConverter* GetNumberToWordsConverter( const std::string &culture )
     {
         return NumberToWordsConverters::get()->ResolveForCulture( culture );
     }

@@ -3,6 +3,7 @@
 #include "../Localisation/NumberToWords/DefaultNumberToWordsConverter.h"    // DefaultNumberToWordsConverter
 #include "../Localisation/NumberToWords/EnglishNumberToWordsConverter.h"    // EnglishNumberToWordsConverter
 #include "../Localisation/NumberToWords/GermanNumberToWordsConverter.h"     // GermanNumberToWordsConverter
+#include "../Localisation/NumberToWords/RussianNumberToWordsConverter.h"    // RussianNumberToWordsConverter
 
 using namespace Humanizer::Configuration;
 using namespace Humanizer::Localisation::NumberToWords;
@@ -12,12 +13,13 @@ NumberToWordsConverterRegistry::NumberToWordsConverterRegistry() :
 {
 //    Register( "af", new AfrikaansNumberToWordsConverter() );
     Register( "en", new EnglishNumberToWordsConverter() );
+    Register( "en-US", new EnglishNumberToWordsConverter() );
 //    Register( "ar", new ArabicNumberToWordsConverter() );
 //    Register( "fa", new FarsiNumberToWordsConverter() );
 //    Register( "es", new SpanishNumberToWordsConverter() );
 //    Register("pl", (culture) => new PolishNumberToWordsConverter(culture));
 //    Register( "pt-BR", new BrazilianPortugueseNumberToWordsConverter() );
-//    Register( "ru", new RussianNumberToWordsConverter() );
+    Register( "ru", new RussianNumberToWordsConverter() );
 //    Register( "fr", new FrenchNumberToWordsConverter() );
 //    Register( "nl", new DutchNumberToWordsConverter() );
 //    Register("he", (culture) => new HebrewNumberToWordsConverter(culture));

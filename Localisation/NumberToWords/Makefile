@@ -65,7 +65,8 @@ EXE=
 #vpath %.cpp .
 
 SRCC =  EnglishNumberToWordsConverter.cpp \
-		GermanNumberToWordsConverter.cpp
+		GermanNumberToWordsConverter.cpp \
+		RussianNumberToWordsConverter.cpp
 
 OBJS = $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCC)) $(patsubst %.c,$(OBJDIR)/%.o,$(SRCC))
 

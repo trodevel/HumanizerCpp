@@ -8,7 +8,7 @@ using namespace Humanizer::Configuration;
 
 void test_kern( int number, const std::string & loc, const std::string & expected, bool is_ordinal )
 {
-    const INumberToWordsConverter * e = Configurator::GetNumberToWordsConverter( nullptr );
+    const INumberToWordsConverter * e = Configurator::GetNumberToWordsConverter( loc );
 
     std::string res = is_ordinal ? e->ConvertToOrdinal( number ) :e->Convert( number );
 

@@ -5,8 +5,7 @@
 
 #include <map>                      // std::map
 #include <functional>               // std::function
-
-#include "../CultureInfo.h"         // CultureInfo
+#include <string>                   // std::string
 
 namespace Humanizer
 {
@@ -19,8 +18,6 @@ namespace Configuration
 template< class TLocaliser >
 class LocaliserRegistry
 {
-    typedef System::Globalization::CultureInfo CultureInfo;
-
 private:
     std::map<std::string, TLocaliser*> _localisers;
     TLocaliser* _defaultLocaliser;
@@ -40,7 +37,7 @@ public:
     /// Creates a localiser registry with the default localiser factory set to the provided value
     /// </summary>
     /// <param name="defaultLocaliser"></param>
-    LocaliserRegistry(std::function<CultureInfo, TLocaliser> defaultLocaliser)
+    LocaliserRegistry(std::function<std::string, TLocaliser> defaultLocaliser)
     {
         _defaultLocaliser = defaultLocaliser;
     }
@@ -58,7 +55,7 @@ public:
     /// Gets the localiser for the specified culture
     /// </summary>
     /// <param name="culture">The culture to retrieve localiser for. If not specified, current thread's UI culture is used.</param>
-    const TLocaliser* ResolveForCulture( const CultureInfo *culture ) const
+    const TLocaliser* ResolveForCulture( const std::string &culture ) const
     {
         return FindLocaliser( culture );
     }
@@ -75,18 +72,18 @@ public:
 /// <summary>
 /// Registers the localiser factory for the culture provided
 /// </summary>
-    void Register(std::string localeCode, std::function<CultureInfo, TLocaliser> localiser)
+    void Register(std::string localeCode, std::function<std::string, TLocaliser> localiser)
     {
         _localisers[localeCode] = localiser;
     }
 #endif
 
-    const TLocaliser* FindLocaliser( const CultureInfo *culture ) const
+    const TLocaliser* FindLocaliser( const std::string &culture ) const
     {
-        if( culture == nullptr )
+        if( culture.empty() )
             return _defaultLocaliser;
 
-        auto it = _localisers.find( culture->TwoLetterISOLanguageName );
+        auto it = _localisers.find( culture );
         if( it != _localisers.end() )
             return it->second;
 

@@ -54,7 +54,7 @@ SHAREDLIBV=
 SHAREDLIBM=
 LIBS=$(STATICLIB) $(SHAREDLIBV)
 
-AR=ar rc
+AR=ar
 RANLIB=ranlib
 LDCONFIG=ldconfig
 LDSHAREDLIBC=-lc
@@ -80,8 +80,8 @@ test: all teststatic
 teststatic: static
 	@echo static test is not ready yet, dc10
 
-$(BINDIR)/$(STATICLIB): $(OBJS)
-	$(AR) $@ $(OBJS)
+$(BINDIR)/$(STATICLIB): $(LIBS)
+	$(AR) -qc $@ $(BINDIR)/*.o
 	-@ ($(RANLIB) $@ || true) >/dev/null 2>&1
 
 $(OBJDIR)/%.o: %.cpp
@@ -99,11 +99,21 @@ $(TARGET): $(BINDIR) $(BINDIR)/$(TARGET)
 $(BINDIR)/$(TARGET): $(LIBS) $(OBJDIR)/$(TARGET).o $(OBJS) $(BINDIR)/$(STATICLIB)
 	$(CC) $(CFLAGS) -o $@ $(OBJDIR)/$(TARGET).o $(BINDIR)/$(LIBNAME).a $(LIBS) $(EXT_LIBS) $(LFLAGS_TEST)
 
-$(BINDIR)/lib%.a: %
+$(BINDIR)/libConfiguration.a: Configuration
 	cd $<; \
 	make; \
-	cd ../; \
+	cd ..; \
 	ln -sf ../$</$@ $(BINDIR); \
+	cd $(BINDIR); \
+	ar -x ../$@
+
+$(BINDIR)/libLocalisation.a: Localisation
+	cd $<; \
+	make; \
+	cd ..; \
+	ln -sf ../$</$@ $(BINDIR); \
+	cd $(BINDIR); \
+	ar -x ../$@
 
 $(BINDIR):
 	mkdir -p $(OBJDIR)
@@ -112,3 +122,9 @@ $(BINDIR):
 clean:
 	- rm $(OBJDIR)/*.o $(TARGET) $(BINDIR)/$(TARGET) $(BINDIR)/$(STATICLIB)
 	- rm $(LIBS)
+
+cleanall:
+	for s in $(LIB_NAMES); \
+	do \
+	    cd $$s; make clean; cd ..;\
+	done;
