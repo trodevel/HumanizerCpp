@@ -94,9 +94,7 @@ $(OBJDIR)/%.o: %.c
 	$(CC) $(CFLAGS) -DPIC -c -o $@ $< $(INCL)
 
 $(BINDIR)/libNumberToWords.a: NumberToWords
-	cd $<; \
-	make; \
-	cd ..; \
+	make -C $<
 	ln -sf ../$</$@ $(BINDIR); \
 	cd $(BINDIR); \
 	ar -x ../$(BINDIR)/libNumberToWords.a

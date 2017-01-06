@@ -100,17 +100,13 @@ $(BINDIR)/$(TARGET): $(LIBS) $(OBJDIR)/$(TARGET).o $(OBJS) $(BINDIR)/$(STATICLIB
 	$(CC) $(CFLAGS) -o $@ $(OBJDIR)/$(TARGET).o $(BINDIR)/$(LIBNAME).a $(LIBS) $(EXT_LIBS) $(LFLAGS_TEST)
 
 $(BINDIR)/libConfiguration.a: Configuration
-	cd $<; \
-	make; \
-	cd ..; \
+	make -C $<
 	ln -sf ../$</$@ $(BINDIR); \
 	cd $(BINDIR); \
 	ar -x ../$@
 
 $(BINDIR)/libLocalisation.a: Localisation
-	cd $<; \
-	make; \
-	cd ..; \
+	make -C $<
 	ln -sf ../$</$@ $(BINDIR); \
 	cd $(BINDIR); \
 	ar -x ../$@
